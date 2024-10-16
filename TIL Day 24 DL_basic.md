@@ -141,6 +141,10 @@ import torchvision # 이미지 처리
 import torchvision.transforms as transforms # 이미지 처리 전처리
 ```
 2. 데이터셋 전처리
+* train = True : 학습용 데이터
+* transform = 생성한 전처리 설정(transform)
+* batch_size : 쪼갠 데이터의 크기
+* suffle : 쪼갠 데이터 섞기 ; 그대로 사용하면 순서의 상관이 작용 할 가능성이 있음
 ```py
 # 데이터셋 전처리
 transform = transforms.Compose([
@@ -180,6 +184,78 @@ class SimpleANN(nn.Module): # 상속으로 기능 가져오기
         # 예시) 전체 16 (-1, 4) # (4,4)로 생성
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
+        x = self.fc3(x) # 최종출력 레이어는 relu 처리가 필요 없음
+        return x # 결과는 (64개 데이터 * 10차원)
+```
+4. 모델 초기화
+```py
+# 모델 초기화
+model = SimpleANN()
+
+correct = 0
+total = 0
+with torch.no_grad():
+    # 평가 단계에서는 기울기 계산 필요가 없음, 생략
+    for data in testloader:
+        images, labels = data
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        # 10개의 레이브은 각각의 가능성, 각 레이블에서 가능성이 가장 큰것만 추출
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+print(f'Accuracy of the network on the 10000 test images: {100 * correct / total:.2f}%') 
+# 학습 전 = 9.35%
+
+criterion = nn.CrossEntropyLoss() # 분류모델 손실함수 계산
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+# 최적화, lr- 학습률(적당히 작은값), momentum - 치후 설명
+```
+5. 모델 학습
+* epoch : 한번의 학습 싸이클 ; 적절하게 설정 필요
+```py
+# 모델 학습
+for epoch in range(10):  # 10 에포크 동안 학습 
+    running_loss = 0.0
+    for i, data in enumerate(trainloader, 0):
+        # i = index, 
+        inputs, labels = data
+
+        # 기울기 초기화 - 연쇄법칙 수행으로 남아있는 로그 제거
+        optimizer.zero_grad()
+
+        # 순전파 + 역전파 + 최적화
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        # 업데이트를 진행할 방향, 기울기를 찾는 과정
+        optimizer.step() 
+        # 기울기를 바탕으로 가중치를 업데이트
+
+        # 손실 출력
+        running_loss += loss.item()
+        if i % 100 == 99:  # 매 100 미니배치마다 출력
+            print(f'[Epoch {epoch + 1}, Batch {i + 1}] loss: {running_loss / 100:.3f}')
+            running_loss = 0.0
+
+print('Finished Training')
+```
+6. 모델 평가
+```py
+correct = 0
+total = 0
+with torch.no_grad():
+    # 평가 단계에서는 기울기 계산 필요가 없음, 생략
+    for data in testloader:
+        images, labels = data
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        # 10개의 레이브은 각각의 가능성, 각 레이블에서 가능성이 가장 큰것만 추출
+        total += labels.size(0)
+        # 배치 크기 
+        correct += (predicted == labels).sum().item()
+        # 에측값과 실제 값이 일치하는 샘플의 수를 계산
+
+print(f'Accuracy of the network on the 10000 test images: {100 * correct / total:.2f}%')
+# 97.61%
 ```
