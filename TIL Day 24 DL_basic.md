@@ -98,3 +98,88 @@
 - 수학적 원리
   - 연쇄법칙(Chaine Rule) 여러개의 레이어의 기울기 계산하는 법칙
   - 각 층의 기울기는 이전 층의 기울기와 현재 층의 기울기를 곱하여 계산
+-------
+
+## 인공 신경망의 기본 구조와 동작원리
+### ANN(Artificial Neural Networks) 구성요소
+- 생물학적 신경망을 모방하여 설계된 컴퓨팅 시스템
+1. ANN의 기본 구성요소
+- 입력층, 은닉층, 출력층
+- 각 층은 뉴런으로 구성
+- 출력층부터 설계: 문제의 종류에 따라 출력이 달라야 함 
+- 입력층: 입력 데이터를 은닉층이 받아들이는 형태로 변환하여 전달
+- 은닉층: 입력 데이터를 처리하고 특징을 추출 / 연산 파트
+2. 동작 방식
+- 순전파(Foward Propagation)
+  - 입력을 통해 각층 뉴런 활성화
+  - 최종 출력 값을 계산
+  - 각 뉴런은 입력값에 가중치(weight)를 곱하고, 바이어스(bias)를 더함
+  - 활성화 함수(activation)을 통해 출력 값을 결정
+- 손실계산(Loss Calculation)
+  - 예측값과 실제 값의 차이를 계산
+- 역전파(Backpropagation)
+  - 손실함수의 기울기를 출력층에서 입력층 발향으로 계산
+  - 계산을 바탕으로 가중치 업데이트
+  - Parameter: 업데이트 하기 위한 가중치
+  - hyperparameter: parameter값을 조정해서 global optimum을 찾아감
+- 출력 레이어 선택
+  - 획귀문제: 출력 레이어의 뉴런 수는 예측하려는 연속적인 값의 차원과 동일
+    - 활성화 함수 = 주로 선형 함수 
+  - 이진 분류 문제: 출력 레이어의 뉴런 수는 1
+    - 활성화 함수 = sigmoid; 0과 1사이의 확률
+  - 다중 클래스 분류 문제: 예측하려는 클래스 수와 동일
+    - 활성화 함수 = sofdmax; 각 클래스에 대한 확률
+
+
+### MNIST 예제
+1. 모듈 `import`
+```py
+import torch # 핵심 라이브러리
+import torch.nn as nn # neural networks 신경망 구성
+import torch.optim as optim # 최적화(함수를 최소 또는 최대로 맞추는 변수를 찾는 것)
+import torchvision # 이미지 처리
+import torchvision.transforms as transforms # 이미지 처리 전처리
+```
+2. 데이터셋 전처리
+```py
+# 데이터셋 전처리
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    # 이미지를 Tensor(파이토치 자료구조)로 전환
+    transforms.Normalize((0.5,), (0.5,)) 
+    # 이미지 정규화(평균, 표준편차)
+])
+# MNIST 데이터셋 로드
+trainset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+# 경로 # train(학습용) 데이터셋 여부 # 다운로드 여부 #transform 전달-전처리한 상태로
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
+# 토치.유틸.데이터 기능.데이터 로더(데이터 셋, batch_size(쪼갠단위로 학습), suffle(섞어서 쪼갬))
+
+testset = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False)
+```
+3. 상속으로 SimpleANN 클래스 기능 가져오기
+```py
+class SimpleANN(nn.Module): # 상속으로 기능 가져오기
+    # init 설정
+    def __init__(self):
+        # 부모 클래스의 init 가져오기
+        super(SimpleANN, self).__init__() 
+        # fc : fully connected module ; 서로가 서로에게 연결된 레이어 
+        self.fc1 = nn.Linear(28 * 28, 128)  # 입력층에서 은닉층으로
+        # nn.Linear: ANN모델 생성 함수
+        # 입출력 지정
+        # 28 * 28 데이터셋의 크기 / 10 0~9 10개로 출력
+        self.fc2 = nn.Linear(128, 64)       # 은닉층에서 은닉층으로
+        self.fc3 = nn.Linear(64, 10)        # 은닉층에서 출력층으로
+
+    def forward(self, x): # 레이어간 전달
+        x = x.view(-1, 28 * 28)  # 입력 이미지를 1차원 벡터로 변환
+        # view 함수 -1 
+        # 전체 요소 개수에서 28*28 을 제외한 성분의 수 
+        # 예시) 전체 16 (-1, 4) # (4,4)로 생성
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+```
