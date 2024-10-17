@@ -1,7 +1,6 @@
+## 데이터셋 전처리 
 1. 이미지 정규화 요소 설정
-
-# 데이터셋 전처리 
-## dataset = MNIST
+### dataset = MNIST
 ```py
 transform = transforms.Compose([
     transforms.ToTensor(),
@@ -10,7 +9,7 @@ transform = transforms.Compose([
     # 이미지 정규화(평균, 표준편차)
     ])
 ```
-## dataset - CIFAR10
+### dataset - CIFAR10
 ```py
 transform = transforms.Compose([
     transforms.ToTensor(),
@@ -18,15 +17,14 @@ transform = transforms.Compose([
     ])
 ```
 
-## 조사한 내용(comfirmed)
+### 조사한 내용(comfirmed)
 * transofrms.Normalize()는 각 채널별 평균(mean)을 뺀 뒤 표준편차(std)로 나누어 정규화
 * MNIST는 흑백, CIFAR10은 RGB 채널을 사용 
 * 흑백은 한개씩, RGB는 세개씩
 
-
+## init 설정
 2. 모델 입출력 수치 결정
-# init 설정
-## dataset MNIST - ANN
+### dataset MNIST - ANN
 - X_train: torch.Size([64, 1, 28, 28]) type: torch.FloatTensor
 - Y_train: torch.Size([64]) type: torch.LongTensor
 ```py
@@ -43,7 +41,7 @@ class SimpleANN(nn.Module): # 상속으로 기능 가져오기
         self.fc2 = nn.Linear(128, 64)       # 은닉층에서 은닉층으로
         self.fc3 = nn.Linear(64, 10)        # 은닉층에서 출력층으로
 ```
-## datset MNIST - CNN
+### datset MNIST - CNN
 ```py
 class SimpleCNN(nn.Module):
     def __init__(self):
@@ -59,18 +57,19 @@ class SimpleCNN(nn.Module):
         self.fc2 = nn.Linear(512, 10)                # 출력 층 (10개의 클래스)
         # ANN 레이어 여러개 사용 가능
 ```
-## 답변 내용(comfirmed)
+### 답변 내용(comfirmed)
 1. self.fc1 = nn.Linear(28 * 28, 128) 128, 은닉층을 줄여주는 사이즈, 2의 배수로 하면 좋다는 암묵적 숫자
 2. self.fc1 = nn.Linear(64 * 7 * 7, 512) 
 - 7*7 = 축소한 MNIST 데이터 픽셀 크기
 - 암묵적인 적정값 512 - 2의배수로 하면 좋음
 
+
+## 각 수치의 의미 
 3. 모델 평가
-# 각 수치의 의미 
 - _, predicted
 - .2f 소수점 두자리까지만 포맷팅
 - flatten[100] 백자리까지만
-## dataset MNIST - ANN
+### dataset MNIST - ANN
 ```py
 correct = 0
 total = 0
@@ -88,7 +87,7 @@ with torch.no_grad():
 
 print(f'Accuracy of the network on the 10000 test images: {100 * correct / total:.2f}%')
 ```
-## dataset -sine -RNN
+### dataset -sine -RNN
 ```py
 # 모델 평가
 model.eval()
@@ -102,7 +101,7 @@ plt.plot(predicted.flatten()[:100], label='Predicted')
 plt.legend()
 plt.show()
 ```
-## 답변 내용(comfirmed)
+### 답변 내용(comfirmed)
 1. _, predicted : 리스트 형태로 반환된 값 중에 불필요한 내용( _,) 은 버리고 마지막 것만 가져옴
 2. .2f 소수점 두자리까지만 포맻팅
 3. flatten[100] 백자리까지만 결과를 가져옴
