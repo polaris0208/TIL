@@ -331,5 +331,4 @@ plt.plot(predicted.flatten()[:100], label='Predicted')
 plt.legend()
 plt.show()
 ```
-![결과](./images/rnn_practice.png)
-
+![rnn_practice](https://github.com/user-attachments/assets/2538cf42-a6cc-40d3-b4e5-204ee8cd7a45)
