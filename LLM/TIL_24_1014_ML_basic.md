@@ -407,7 +407,7 @@ print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 * 규칙 - 불확실성을 줄여주는 것
 ```
 # 트리구조 
-							<root node>
+			    <root node>
                        no -  /       \ - yes
                       <leaf node>  <inernal node> 
                          branch(edge) - \ - yes

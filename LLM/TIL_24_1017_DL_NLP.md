@@ -59,7 +59,7 @@
 - 순차적인 데이터 병렬 처리
 - 자연어 처리에 뛰어난 성능
 - Encoder-Decoder 구조
-  - Encoder: 입력 시퀀스 처리, 인코딩된 표현 생성
+  - Encoder: 입력 시퀀스 처리, 인코딩된 표현 생
     - self-attention: 문장 내 관계 학습 
     - Feed-Foward Neural Network -> 새로운 백터로 변환
   - Decoder
@@ -80,7 +80,7 @@
 - 다양한 자연어 처리 가능
 - 사전학습(Pre-Training)
   - 대규모 텍스트 코퍼스
-  - Masked Language Mode과 Next Sentence Prediction 작업
+  - Masked Language Model과 Next Sentence Prediction 작업
 - Fine-tuning
   - 사전 학습된 BERT를 파인 튜닝하여 사용
   - 텍스트의 분류, 질의 응답, 텍스트 생성 등 다양한 자연어 처리 작업
