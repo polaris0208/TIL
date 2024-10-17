@@ -1,0 +1,108 @@
+1. 이미지 정규화 요소 설정
+
+# 데이터셋 전처리 
+## dataset = MNIST
+```py
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    # 이미지를 Tensor(파이토치 자료구조)로 전환
+    transforms.Normalize((0.5,), (0.5,)) 
+    # 이미지 정규화(평균, 표준편차)
+    ])
+```
+## dataset - CIFAR10
+```py
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+```
+
+## 조사한 내용(comfirmed)
+* transofrms.Normalize()는 각 채널별 평균(mean)을 뺀 뒤 표준편차(std)로 나누어 정규화
+* MNIST는 흑백, CIFAR10은 RGB 채널을 사용 
+* 흑백은 한개씩, RGB는 세개씩
+
+
+2. 모델 입출력 수치 결정
+# init 설정
+## dataset MNIST - ANN
+- X_train: torch.Size([64, 1, 28, 28]) type: torch.FloatTensor
+- Y_train: torch.Size([64]) type: torch.LongTensor
+```py
+class SimpleANN(nn.Module): # 상속으로 기능 가져오기
+    # init 설정
+    def __init__(self):
+        # 부모 클래스의 init 가져오기
+        super(SimpleANN, self).__init__() 
+        # fc : fully connected module ; 서로가 서로에게 연결된 레이어 
+        self.fc1 = nn.Linear(28 * 28, 128)  # 입력층에서 은닉층으로 # 128 : 2의 7승- 은닉층을 줄여주는, 2의 배수로 하면 좋다
+        # nn.Linear: ANN모델 생성 함수
+        # 입출력 지정
+        # 28 * 28 데이터셋의 크기 / 10 0~9 10개로 출력
+        self.fc2 = nn.Linear(128, 64)       # 은닉층에서 은닉층으로
+        self.fc3 = nn.Linear(64, 10)        # 은닉층에서 출력층으로
+```
+## datset MNIST - CNN
+```py
+class SimpleCNN(nn.Module):
+    def __init__(self):
+        super(SimpleCNN, self).__init__()
+        self.conv1 = nn.Conv2d(1, 32, 3, padding=1)  
+        # 입력 채널(1: 흑백, 3: RGB), 출력 채널(입력채널과 별도), 커널(필터) 크기 3x3
+        self.pool = nn.MaxPool2d(2, 2)               
+        # 풀링 크기 2x2 # kernel, stride
+        # Pooling 크기가 (2, 2) 라면 출력 데이터 크기는 입력 데이터의 행과 열 크기를 2로 나눈 몫
+        self.conv2 = nn.Conv2d(32, 64, 3, padding=1) 
+        # 입력 채널(이전 출력 채널과 동일) 32, 출력 채널 64, 커널 크기 3x3
+        self.fc1 = nn.Linear(64 * 7 * 7, 512)        # 완전 연결 층
+        self.fc2 = nn.Linear(512, 10)                # 출력 층 (10개의 클래스)
+        # ANN 레이어 여러개 사용 가능
+```
+## 답변 내용(comfirmed)
+1. self.fc1 = nn.Linear(28 * 28, 128) 128, 은닉층을 줄여주는 사이즈, 2의 배수로 하면 좋다는 암묵적 숫자
+2. self.fc1 = nn.Linear(64 * 7 * 7, 512) 
+- 7*7 = 축소한 MNIST 데이터 픽셀 크기
+- 암묵적인 적정값 512 - 2의배수로 하면 좋음
+
+3. 모델 평가
+# 각 수치의 의미 
+- _, predicted
+- .2f 소수점 두자리까지만 포맷팅
+- flatten[100] 백자리까지만
+## dataset MNIST - ANN
+```py
+correct = 0
+total = 0
+with torch.no_grad():
+    # 평가 단계에서는 기울기 계산 필요가 없음, 생략
+    for data in testloader:
+        images, labels = data
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1) # 리턴값이 리스트로, 마지막 것만 가져온다(쓸모없는 변수)
+        # 10개의 레이브은 각각의 가능성, 각 레이블에서 가능성이 가장 큰것만 추출
+        total += labels.size(0)
+        # 배치 크기
+        correct += (predicted == labels).sum().item()
+        # 에측값과 실제 값이 일치하는 샘플의 수를 계산
+
+print(f'Accuracy of the network on the 10000 test images: {100 * correct / total:.2f}%')
+```
+## dataset -sine -RNN
+```py
+# 모델 평가
+model.eval()
+with torch.no_grad():
+    predicted = model(X).detach().numpy()
+
+# 시각화
+plt.figure(figsize=(10, 5))
+plt.plot(y.numpy().flatten()[:100], label='True')
+plt.plot(predicted.flatten()[:100], label='Predicted')
+plt.legend()
+plt.show()
+```
+## 답변 내용(comfirmed)
+1. _, predicted : 리스트 형태로 반환된 값 중에 불필요한 내용( _,) 은 버리고 마지막 것만 가져옴
+2. .2f 소수점 두자리까지만 포맻팅
+3. flatten[100] 백자리까지만 결과를 가져옴

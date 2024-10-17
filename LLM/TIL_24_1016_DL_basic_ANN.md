@@ -41,7 +41,7 @@
     - Perceptron: 인공 신경망의 가장 기본적인 단위; 하나의 뉴런을 모델링
     - 입력값에 가중치(weight)를 곱하고 이를 모두 더한 후 활성화 함수(activateion function)을 통해 출력 값을 결정
 
-2. 다층 퍼셉트론(MLP)
+2. 다층 퍼셉트론(MLP) - Multi Layer Perceptron
   - 다층 퍼셉트론의 개념
     - 여러층의 퍼셉트론을 쌓아올린 신경망 구조
   - 레이어의 개념
