@@ -1,19 +1,14 @@
-<style>
-vio { color: #9370db }
-lgt {background-color:#E6E6FA}
-</style>
-
 ## 과적합 방지 기법
 > 정규화, Dropout, 조기종료, 데이터 증강
-- 과적합 <vio> Overfitting</vio>
+- 과적합 **Overfitting**
 - 학습이 과도하게 진행되어 일반적인 문제 예측 불가
 - 답을 완전히 외운 상태
 
-### 정규화 <vio>Nomalization</vio> 
+### 정규화 **Nomalization**
 1. 개념
-- 데이터를 <lgt>일정한 범위</lgt>로 조정 
+- 데이터를 **일정한 범위**로 조정 
 2. 종류
-- 배치 정규화 <vio>Batch Nomalization</vio>
+- 배치 정규화 **Batch Nomalization**
   - 각 미니배치에서 활성화 값을 정규화
   ``` 
   1. 미니 배치에서 특징의 평균과 분산을 계산
@@ -29,7 +24,7 @@ lgt {background-color:#E6E6FA}
     - 학습률을 더 크게 사용
     - 학습이 안정적이고, 초기화 값에 민강하지 않게 됨
     <br>
-- 레이어 정규화 <vio>Layer Nomalization</vio>
+- 레이어 정규화 **Layer Nomalization**
   - 주로 RNN 사용
   - 각 레이어의 활성화 값을 정규화 
     - 순환하는 RNN의 특징으로 정규화가 일부 제한 떄문
@@ -43,18 +38,18 @@ lgt {background-color:#E6E6FA}
   - 배치 크기에 영향을 받지 않음 
     - 시퀀스 데이터에 적합
     <br>
-- 그룹 정규화 <vio>Group Nomalization</vio> 
+- 그룹 정규화 **Group Nomalization** 
   - 배치 정규화와 레이어 정규화의 장점을 결합
   - 채널을 그룹으로 나누고 각 그룹에서 정규화
   <br>
-- 인스턴스 정규화 <vio>Instance Nomalization</vio>
+- 인스턴스 정규화 **Instance Nomalization**
   - 각 샘플에 대해서 정규화
 
 > 그룹 정규화와 인스턴스 정규화는 Advanced 모델
 > 상세하게 공부한 후 사용
 > 비전 작업, 스타일 변환, 생성 작업 등
-### 드롭 아웃 <vio>Dropout</vio>
-- 학습 과정에서 무작위로 뉴런을 <lgt>비활성화</lgt>
+### 드롭 아웃 **Dropout**
+- 학습 과정에서 무작위로 뉴런을 **비활성화**
 ```
 <과적합>
 30 명의 학생
@@ -69,14 +64,14 @@ A가 모르는 문제는 해결 불가
 ```
 - 평가 또는 실사용 시에는 모든 뉴런을 활성화
 
-### 조기 종료 <vio>Early Stopping</vio>
-- <lgt>학습 - 검증 - 평가</lgt> 데이터로 분할
+### 조기 종료 **Early Stopping**
+- **학습 - 검증 - 평가** 데이터로 분할
 - 검증 데이터를 통해 성능을 판단
 - 검증 데이터의 성능이 더이상 오르지 않으면 중단
 
-### 데이터 증강 <vio>Data Augmentation</vio>
-- 원본 데이터를 변형하여 <lgt>새로운 데이터 생성</lgt>
-- 데이터를 <lgt>다양화</lgt>
+### 데이터 증강 **Data Augmentation**
+- 원본 데이터를 변형하여 **새로운 데이터 생성**
+- 데이터를 **다양화**
 - 이미지와 같이 변형할 가능성이 많은 경우 효과적
 ``` 
 <원본 데이터>
@@ -88,28 +83,28 @@ A가 모르는 문제는 해결 불가
 ....
 ```
 -----
-## 하이퍼 파라미터 튜닝<br><vio> Hyperparameter Tuning</vio>
+## 하이퍼 파라미터 튜닝<br>**Hyperparameter Tuning**
 > 모델 학습의 여러가지 설정값
 > 설정에 따라 모델 성능에 영향
 
 
 
 ### 하이퍼 파라미터
-1. 학습률 <vio>Learining Rate</vio>
-- 가중치를 업데이트 시 <lgt>얼마나 학습할지</lgt> 결정 
+1. 학습률 **Learining Rate**
+- 가중치를 업데이트 시 **얼마나 학습할지** 결정 
 - 일반적으로 0.1, 0.01, 0.001 등
 
-2. 배치 크기 <vio>Batch Size</vio>
+2. 배치 크기 **Batch Size**
 - 한번의 업데이트에 사용하는 데이터의 샘플 크기
 - 일반적으로 2의 배수꼴
 - 32, 64, 128
 
-3. 에포크 <vio>Epoch</vio>
-- 데이터를 반복해서 학습하는 <lgt>한 주기</lgt>
+3. 에포크 **Epoch**
+- 데이터를 반복해서 학습하는 **한 주기**
 - 10 에포크 = 주기를 10회 
 - 조기 종료 기법을 사용하여 적절하게 결정 가능
 
-4. 모멘텀 <vio>Momentum</vio>
+4. 모멘텀 **Momentum**
 - 이전 기울기를 현재 기울기에 반영
   - 학습 속도를 높이고, 진동의 줄임
 - 일반적으로 0.9, 0.99 등
@@ -120,59 +115,54 @@ A가 모르는 문제는 해결 불가
 - 모델의 가중치를 반복적으로 업데이트
 - 각 업데이트는 손실함수의 기울기를 보고 미분적으로 진행
 ```
-- <vio>Batch Gradient Descent</vio>
+- **Batch Gradient Descent**
   - 전체 데이터 셋 활용 
   - 한번에 가중치를 업데이트
-- <vio>Stochastic Gradient Descent</vio>
+- **Stochastic Gradient Descent**
   - 데이터 샘플을 사용
   - 가중치 업데이트가 균일하지 못함
   - 손실함수 진동 가능
-- <vio>Mini Batch Gradient Descent</vio>
+- **Mini Batch Gradient Descent**
   - 데이터 셋을 작은 배치로 나눠서 사용
   - 효율성과 안정성
 
-- <vio>AdaGrad</vio>
+- **AdaGrad**
   - 자주 등장하는 특징은 학습률을 줄임
   - 드물게 등장하는 특징의 학습률을 늘림
   - 학습이 장기화 되면 학습률이 줄어드느 문제 방생
 
-- <vio>RMSProp</vio>
+- **RMSProp**
   - 최근의 기울기를 기반으로 학습률을 조정
   - AdaGrad 단점 보완
   - 자체적인 하이퍼파라미터가 많아 설정이 복잡힌 문제
 
-- <vio>Adam</vio>
+- **Adam**
   - 모멘텀과 RMSProp의 장점을 결합
   - 학습률을 동적으로 조정
   - 빠르고 안정적
   - 하이퍼파라미터가 많아 설정이 어려움
 
-4. 가중치 초기화 <vio>Weight Initialization</vio>
+4. 가중치 초기화 **Weight Initialization**
 - 모델의 가중치를 초기화하는 방법을 결정
-- <vio>Xavier</vio> 초기화
+- **Xavier** 초기화
   - 입력 노드의 수를 고려
-  - <vio>Sigmoid</vio>, <vio>Hyperbolic Tangent</vio>활성화 함수 사용하는 경우
-- <vio>He</vio> 초기화
+  - **Sigmoid**, **Hyperbolic Tangent**활성화 함수 사용하는 경우
+- **He** 초기화
   - 입력과 출력 노드의 수를 고려
-  - <vio>ReLU</vio> 함수 사용하는 경우
+  - **ReLU** 함수 사용하는 경우
 
 ### 자동 튜닝 기법
-1. <vio>Grid Search</vio>: 모든 조합을 시도
+1. **Grid Search**: 모든 조합을 시도
 
-2. <vio>Random Search</vio>: 무작위 값을 선택
+2. **Random Search**: 무작위 값을 선택
 
-3. <vio>Bayesian Optimization</vio>: 이전 평가 결과를 바탕
+3. **Bayesian Optimization**: 이전 평가 결과를 바탕
 
 ----
-<style>
-vio { color: #9370db }
-lgt {background-color:#E6E6FA}
-</style>
-
-## 모델 평가와 검증<br><vio>Validation</vio>
+## 모델 평가와 검증<br>**Validation**
 > 교차 검증 방식
 ### 개념
-- 교차검증 <vio> Cross-Validation</vio>
+- 교차검증 **Cross-Validation**
   - 모델의 성능 평가
   - 데이터를 여러번 나누어 학습과 검증을 반복
 - 필요성

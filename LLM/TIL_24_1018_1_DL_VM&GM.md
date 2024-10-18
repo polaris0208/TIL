@@ -1,19 +1,14 @@
-<style>
-v { color: #9370db }
-l {background-color:#E6E6FA}
-</style>
-
-## <v>Vision Model</v>
+## ***Vision Model***
 > CNN
 > 잔차 연결
 > ResNet-50, 101, 152 등 
 
-### <v>ResNet</v>
+### ***ResNet***
 - 기울기 소실 등 기존 모델들의 수학적 문제에 대안 제시
 #### 개념
 1. ResNet
 - 깊은 신경망 학습
-- <l>Residual Learning</l> ; 잔차 학습 개념
+- ***Residual Learning*** ; 잔차 학습 개념
 ``` 
 기존 모델 : 깊게 학습 할 수록 input과 가중치가 희미해짐
 ResNet: 입력과 출력의 차이인 "잔차"를 학습 , 최초 input은 그대로 계속 전달
@@ -24,22 +19,22 @@ ResNet: 입력과 출력의 차이인 "잔차"를 학습 , 최초 input은 그�
 - 간단한 블록구조: 네트워크를 쉽게 확장
 
 ### 다른 모델
-#### <v>VGG </v>- 크고 단순
+#### ***VGG***- 크고 단순
 - 작은 3x3 필터 사용 - 깊이 증가
 - 레이어 16, 19
 - 단순하고 규칙적인 구조 - 다양한 변형 모델
 
-#### <v>Inception</v> - 얕고 복잡 
+#### ***Inception*** - 얕고 복잡 
 - 네트워크 내의 네트워크 개념
-- inception 블록 - <l>깊이와 너비 동시에 증가</l>
+- inception 블록 - ***깊이와 너비 동시에 증가***
   - 다양한 크기의 필터를 동시에 사용
   - 1x1 필터 사용 - 채널 수 감소 - 계산량 감소
   - 다양한하고 효율적인 학습
 
-#### <v>YOLO(You Only Look Once)</v>
+#### ***YOLO(You Only Look Once)***
 - 객체 탐지 모델
 - 이미지 속의 객체의 위치와 클래스를 동시에 예측
-- <l>이미지 전체를 한번에 탐지</l>
+- ***이미지 전체를 한번에 탐지***
   - 단일 신경망(한번에 예측)
   - end to end(객체 탐지-분류가 한번에 이루어짐)
   - 전역 분석
@@ -57,22 +52,22 @@ non-Maximum suppression 통해 여러개의 상자가 하나의 객체 탐지하
 ```
 - 저작권 문제로 버전 사용에 주의가 필요
 
-### <v>Image Segmentation</v>
+### ***Image Segmentation***
 - 이미지를 픽셀 단위로 분해해서 각 픽셀이 어느 객체에 속하는지 분석
-- <v>Sementic Segmentation</v> : 이미지의 각 픽셀을 클래스 레이블로 구분 ex) 사람인지 구분
-- <v>Instance Segmentation</v> : 클래스 내에서도 개별 객체를 구분 ex) 사람 중에 각각의 사람을 구분
-- <v>FCN(Fully Convolution Network)</v>
+- ***Sementic Segmentation*** : 이미지의 각 픽셀을 클래스 레이블로 구분 ex) 사람인지 구분
+- ***Instance Segmentation*** : 클래스 내에서도 개별 객체를 구분 ex) 사람 중에 각각의 사람을 구분
+- ***FCN(Fully Convolution Network)***
   - 모든 레이어가 CNN으로 구성(완전연결레이어 제거)
   - 입력크기에 상관없이 구동
   - 픽셀 단위 분류 수행
-  - 기존 <l>CNN의 마지막 레이어을 fc에서 conc 로 바꾸고 업스케일링</l> = 원본크기 출력
+  - 기존 ***CNN의 마지막 레이어을 fc에서 conc 로 바꾸고 업스케일링*** = 원본크기 출력
   - 시멘틱 세그멘테이셔에 사용
-- <v>U-Net</v>
+- ***U-Net***
   - FCN의 발전 모델
   - 생물학적 세포 이미지 세그멘테이션 목적
   - 인코더(특징추출) - 스킵 연결(인코더의 높은 해상도 특징을 전달) - 디코더(원본 크기로 복원)
   - 소량의 데이터에서 높은 성능 - 의료이미지 처리에 사용
-- <v>Mask R-CNN</v>
+- ***Mask R-CNN***
   - 객체 검출, 인스턴스 세그멘테이션 동시 수행
   - 다양한 어플리케이션에서 사용
 
@@ -80,7 +75,7 @@ non-Maximum suppression 통해 여러개의 상자가 하나의 객체 탐지하
 ## 생성형 모델
 > GAN, VAE
 
-### <v>GAN</v>
+### ***GAN***
 >Generative Adversarial Network
 #### 개념
 - 두개의 모델이 서로 경쟁
@@ -89,22 +84,22 @@ non-Maximum suppression 통해 여러개의 상자가 하나의 객체 탐지하
 - unconditional GAN : 무작위 데이터 생성
 
 #### 구조
-1. 생성자 <v>Generator</v>
-- <v>random input</v>을 받아 새로운 데이터 생성
-2. 판별자 <v>Discriminator</v>
-- 생성자가 생성한 데이터 <v>Sample</v>이 진짜인지 판별
+1. 생성자 ***Generator***
+- ***random input***을 받아 새로운 데이터 생성
+2. 판별자 ***Discriminator***
+- 생성자가 생성한 데이터 ***Sample***이 진짜인지 판별
 3. 생성자와 판별자가 경쟁하는 과정에서 성능 향상
 
 #### 단점
 - 경쟁이 적적히 조율되지 않으면 학습이 진행되지 않는 문제 발생
 - 모드 붕괴: 생성자가 데이터를 제한적으로만 생성하는 문제 발생
-- <l>DCGAN, WGAN, CycleGAN</l> 등의 변형 모델에서 개선
+- ***DCGAN, WGAN, CycleGAN*** 등의 변형 모델에서 개선
 
-### <v>VEA</v>
-> <v>Variational Encoder</v>
+### ***VEA***
+> ***Variational Encoder***
 
 #### 개념
-- <l>잠재공간을 통계적인 기법</l>으로 생성
+- ***잠재공간을 통계적인 기법***으로 생성
 - 확률분포를 모델링 
 - 데이터의 생성과 분포를 효과적으로 학습
 - 일반적인 지식을 학습
@@ -119,13 +114,13 @@ non-Maximum suppression 통해 여러개의 상자가 하나의 객체 탐지하
   - 입력 데이터 x
   - 잠재변수 z에 평균과 분산으로 맵핑
   - 잠재변수는 정규분포에서 샘플링
-  - <v>Reparameterization Trick</v>
+  - ***Reparameterization Trick***
     - 미분하지 못하는 샘플링 데이터의 파라미터를 조정하는 과정
 - 디코더
   - 잠재변수를 입력 데이터로 받음
   - 두가지 손실 함수로 구성
-    - <v>Reconstruction Loss</v> : 원래 데이터와 복원 데이터의 차이를 최소화
-    - <v>Kullback-Leibler Divergence</v> : 인코더가 학습한 잠재분포와 정규분포의 차이를 계산
+    - ***Reconstruction Loss*** : 원래 데이터와 복원 데이터의 차이를 최소화
+    - ***Kullback-Leibler Divergence*** : 인코더가 학습한 잠재분포와 정규분포의 차이를 계산
       - [참고](https://daebaq27.tistory.com/88) P분포 대신 Q분포를 사용할 경우 정보량 변화를 측정
 
 #### 단점
@@ -138,7 +133,7 @@ non-Maximum suppression 통해 여러개의 상자가 하나의 객체 탐지하
 
 ### 개념
 1. 기본 개념
-- 이전에 학습한 지식을 <l>전이하여</l>  새로운 모델에 적용
+- 이전에 학습한 지식을 ***전이하여***  새로운 모델에 적용
 - 일부 레이어를 미세 조정하거나 추가해서 사용
 2. 필요성
 - 데이터 부족: 데이터가 불충분 할 때 기존모델의 지식 활용
@@ -146,19 +141,19 @@ non-Maximum suppression 통해 여러개의 상자가 하나의 객체 탐지하
 - 성능 향상: 기존모델은 대규모 데이터를 통해 학습 = 고성능
 
 3. 원리
-- 특징 추출기 <v>Feature Extractor</v>
+- 특징 추출기 ***Feature Extractor***
   - 초기층 : 사전 학습 모델로 고정
   - 마지막층 : 새로운 데이터에 맞게 재학습
-- 미세 조정 <v>Fine Tuning</v>
+- 미세 조정 ***Fine Tuning***
   - 전체를 새로운 데이터에 맞게 재학습
 
 4. 과정
 - 사전 학습된 모델 로드
   - PyTorch에서 제공
-  - <l>ResNet,, VGG, Inception</l>
+  - ***ResNet,, VGG, Inception***
 - 모델 수정
   - 마지막 층을 새로운 문제에 맞게 수정
   - 초기층은 기존 모델로 고정
 - 모델 학습
   - 새로운 데이터에 맞게 학습
-  - <l>특징 추출기 또는 미세조정 방식 중 선택</l>
+  - ***특징 추출기 또는 미세조정 방식 중 선택***

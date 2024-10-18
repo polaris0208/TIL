@@ -1,9 +1,4 @@
-<style>
-vio { color: #9370db }
-lgt {background-color:#E6E6FA}
-</style>
-
-## <vio>PyTorch</vio> 기본
+## **PyTorch** 기본
 > 딥러닝 프레임워크
 > 유연성과 사용 편의성
 
@@ -26,10 +21,10 @@ class MyModel(nn.Nodule):
     x = self.layer1(x)
     return x
 ```
-### <vio>Custum Dataset</vio> 생성
+### **Custum Dataset** 생성
 `torch.utils.data.Dataset`: 사용자 정의 데이터셋 생성
 - `torch`의 유틸리티 중, 데이터 기능의, `Dataset` 모듈
-- 데이터 불러오기: <lgt>학습용, 테스트용</lgt> 나눠서 불러옴
+- 데이터 불러오기: **학습용, 테스트용** 나눠서 불러옴
 ```py
 from torch.utils.data import Dataset
 
@@ -48,9 +43,9 @@ def __len__(self):
 def __getitem__(self, idx):
   return self.data[idx], self.targets[idx]
 ```
-### <vio>DataLoader</vio>
+### **DataLoader**
 `torch.utils.data.DataLoader`
--  <vio>mini-batch</vio>학습을 위한 데이터 변환 모듈
+-  **mini-batch**학습을 위한 데이터 변환 모듈
 ```py
 from torch.utils.data import DataLoader
 
@@ -58,7 +53,7 @@ dataset = MyDataset(data, targets)
 dataloader = Dataloader(dataset, batch-size = 32, shuffle = True)
 ```
 - `Dataset`, `DataLoader` 매개변수
-- <vio>MNIST</vio> 예시
+- **MNIST** 예시
 ```py
 trainset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True, drop_last = False, timeout = 1)
@@ -89,7 +84,7 @@ transform = transforms.Compose([
     ])
 ```
 ### GPU로 변경
-- <lgt>Apple slicon은 GPU</lgt> 기반
+- **Apple slicon은 GPU** 기반
 - 기억해두고 다른 장치에서 작업할 때 사용
 - 모델을 GPU로 이동
 ```py
@@ -101,7 +96,7 @@ model.to(device)
 inputs, targets = inputs.to(device), targets.to(device)
 ```
 ### 유틸리티
-- 저장 및 로드: <lgt>가장 자주 사용할 기능</lgt>, 반드시 기억
+- 저장 및 로드: **가장 자주 사용할 기능**, 반드시 기억
 1. 저장 및 로드
 - 저장
 ```py
