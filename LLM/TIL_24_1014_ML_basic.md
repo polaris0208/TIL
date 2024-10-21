@@ -244,7 +244,7 @@ y = data.target # 레이블 # 이진데이터
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # 데이터 스케일링
-scaler = StandardScaler() # 평균이 0 표준차가 1
+scaler = StandardScaler() # 평균이 0 분산 1
 X_train = scaler.fit_transform(X_train) # 평균과 편차를 찾아서 정규화
 X_test = scaler.transform(X_test) # fit 제거 -테스트 데이터의 평균과 편차를 사용하면 안됨
 
@@ -433,3 +433,4 @@ print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
 print(f"Classification Report:\n{classification_report(y_test, y_pred)}")
 print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 ```
+

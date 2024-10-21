@@ -60,9 +60,9 @@ y = data.target # 레이블 # 이진데이터
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # 데이터 스케일링
-scaler = StandardScaler() # 평균이 0 표준차가 1
-X_train = scaler.fit_transform(X_train) # 평균과 편차를 찾아서 정규화
-X_test = scaler.transform(X_test) # fit 제거 -테스트 데이터의 평균과 편차를 사용하면 안됨
+scaler = StandardScaler() # 평균이 0 분산 1
+X_train = scaler.fit_transform(X_train) # 평균과 분산 찾아서 정규화
+X_test = scaler.transform(X_test) # fit 제거 -테스트 데이터의 평균과 분산을 사용하면 안됨
 
 # 모델 생성 및 학습
 model = LogisticRegression()
@@ -143,6 +143,19 @@ print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 from sklearn.naive_bayes import GaussianNB
 
 model = GaussianNB()
+model.fit(X_train, y_train)
+
+# 예측
+y_pred = model.predict(X_test)
+
+# 평가
+print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+print(f"Classification Report:\n{classification_report(y_test, y_pred)}")
+print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
+```
+### Decision Tree 의사결정 나무
+```py
+model = DecisionTreeClassifier(random_state=42)
 model.fit(X_train, y_train)
 
 # 예측
@@ -382,6 +395,116 @@ plt.title('LDA of MNIST Dataset (2D)')
 plt.xlabel('LDA Component 1')
 plt.ylabel('LDA Component 2')
 plt.show()
+```
+## 앙상블 학습 **Ensemble Learning**
+```py
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.metrics import mean_squared_error
+from sklearn.datasets import load_breast_cancer
+
+# 유방암 데이터 로드
+cancer_data = load_breast_cancer()
+X, y = cancer_data.data, cancer_data.target
+
+# 데이터 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 데이터 스케일링
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+```
+1. 배깅 **Bagging**
+```py
+from sklearn.ensemble import BaggingRegressor
+from sklearn.tree import DecisionTreeRegressor
+# 배깅 모델 생성
+bagging_model = BaggingRegressor(estimator=DecisionTreeRegressor(), n_estimators=100, random_state=42)
+
+# 모델 학습
+bagging_model.fit(X_train_scaled, y_train)
+
+# 예측
+y_pred_bagging = bagging_model.predict(X_test_scaled)
+
+# 평가
+mse_bagging = mean_squared_error(y_test, y_pred_bagging)
+print(f'배깅 모델의 MSE: {mse_bagging}')
+```
+2. 부스팅 **Boosting**
+```py
+from sklearn.ensemble import GradientBoostingRegressor
+
+# 부스팅 모델 생성
+boosting_model = GradientBoostingRegressor(n_estimators=100, random_state=42) # estimator가 없음 / 순차 수행이기 때문에 선택지가 적기 떄문에
+
+# 모델 학습
+boosting_model.fit(X_train_scaled, y_train)
+
+# 예측
+y_pred_boosting = boosting_model.predict(X_test_scaled)
+
+# 평가
+mse_boosting = mean_squared_error(y_test, y_pred_boosting)
+print(f'부스팅 모델의 MSE: {mse_boosting}')
+```
+4. **Random Tree**
+```py
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+
+# 랜덤 포레스트 모델 생성
+rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+
+# 모델 학습
+rf_model.fit(X_train_scaled, y_train)
+
+# 예측
+y_pred_rf = rf_model.predict(X_test_scaled)
+
+# 평가
+mse_rf = mean_squared_error(y_test, y_pred_rf)
+print(f'랜덤 포레스트 모델의 MSE: {mse_rf}')
+```
+4. 그래디언트 부스팅 머신 **Gradient Boosting Machine, GBM**
+```py
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error
+
+# GBM 모델 생성
+gbm_model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42) # 약한 학습기로 시작하기 위해 depth는 3
+
+# 모델 학습
+gbm_model.fit(X_train_scaled, y_train)
+
+# 예측
+y_pred_gbm = gbm_model.predict(X_test_scaled)
+
+# 평가
+mse_gbm = mean_squared_error(y_test, y_pred_gbm)
+print(f'GBM 모델의 MSE: {mse_gbm}')
+```
+5. **XGBoost(eXtreme Gradient Boosting)**
+```py
+import xgboost as xgb
+from sklearn.metrics import mean_squared_error
+
+# XGBoost 모델 생성
+xgb_model = xgb.XGBRegressor(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+
+# 모델 학습
+xgb_model.fit(X_train_scaled, y_train)
+
+# 예측
+y_pred_xgb = xgb_model.predict(X_test_scaled)
+
+# 평가
+mse_xgb = mean_squared_error(y_test, y_pred_xgb)
+print(f'XGBoost 모델의 MSE: {mse_xgb}')
 ```
 # Deep Learning Model
 ## MNIST 예제
