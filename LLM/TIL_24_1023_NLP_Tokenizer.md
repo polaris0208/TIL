@@ -1,7 +1,7 @@
 # Tokenizer
 > NLTK, torchtext
-> tokenize: corpus를 token 단위로 나누는 작업
-> corpus(복수형: corpora): 자연언어 연구를 위해 특정한 목적을 가지고 언어의 표본을 추출한 집합
+>> tokenize: corpus를 token 단위로 나누는 작업
+>>> corpus(복수형: corpora): 자연언어 연구를 위해 특정한 목적을 가지고 언어의 표본을 추출한 집합
 
 ## 데이터 전처리
 ### 데이터셋 불러오기
