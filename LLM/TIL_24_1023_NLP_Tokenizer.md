@@ -232,26 +232,4 @@ len(tokenizer.word_index) # 단어집 개수 33014
   try 20
   go 21
 
-### 인코딩, 패딩
-
-- `from tensorflow.keras.preprocessing.sequence import pad_sequences`
-
-- 정수형 데이터로 인코딩
-
-```py
-review_data = tokenizer.texts_to_sequences(cleaned_reviews)
-```
-
-- 원활한 학습을 위해 크기 맞춤
-
-```py
-MAX_LENGTH = 150 # 최대 문장의 길이
-TRUNC = 'post' # 넘칠 경우 자르기 / 앞부분 = pre, 뒷부분 = post
-PAD = 'post' # 모자랄 경우 채우기(0) / 위와 같음
-review_pre = pad_sequences(review_data, maxlen= MAX_LENGTH, truncating = TRUNC, padding = PAD)
-review_pre.shape
-review_pre[0]
-```
-
->array([38,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,.....0]
       
