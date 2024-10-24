@@ -45,3 +45,42 @@ morse = {
 def solution(letter):
     return "".join(map(lambda w: morse[w], letter.split()))
 ```
+# 가위 바위 보
+```py
+def solution(rsp):
+    input = list(str(rsp))
+    output = []
+    for _ in input:
+        if _ == '0' : 
+            p = '5' 
+            output.append(p)
+        elif _ == '2' : 
+            r = '0'
+            output.append(r)
+        elif _ == '5' : 
+            c = '2'
+            output.append(c)
+    answer = ''.join(output)
+    return answe
+#
+def solution(rsp):
+    d = {'0':'5','2':'0','5':'2'}
+    return ''.join(d[i] for i in rsp)
+```
+
+# 구슬 나누기
+```py
+def solution(balls, share):
+    def fac(x):
+        fac_n = 1
+        for _ in range(1, x+1):
+            fac_n *= _
+        return fac_n
+    answer = fac(balls) / (fac(balls - share) * fac(share))
+    return answer
+#
+import math
+
+def solution(balls, share):
+    return math.comb(balls, share)
+```
