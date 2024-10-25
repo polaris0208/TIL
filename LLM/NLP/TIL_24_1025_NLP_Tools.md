@@ -1,7 +1,7 @@
 # NLP Tools
-> [¶ NLTK](#nltk)
-TextBlob
-Gensim**
+> [¶ NLTK](#nltk)<br>
+TextBlob<br>
+Gensim**<br>
 [¶ POS-Tags](#pos-태그-목록)
 
 
@@ -428,12 +428,12 @@ text = Text(retokenize.tokenize(bible_raw))
 s Called Genesis 1 1 In the beginning God created the heaven and the earth 1 2 
 he face of the deep And the Spirit of God moved upon the face of the waters 1 3....
 
-`text.similar("god")`: 대신 사용된 횟수가 높은 단어들 
+- `text.similar("god")`: 대신 사용된 횟수가 높은 단어들 
 
 >them him it he israel thee me you and man david judah us i people
 father jerusalem men that lord
 
-`text.common_contexts(["god", "he"])` : 두 단어의 공통 문맥
+- `text.common_contexts(["god", "he"])` : 두 단어의 공통 문맥
 
 >and_said for_is for_hath which_hath that_hath whom_hath and_saw
 that_is said_hath that_had and_spake which_had and_hath lord_will
