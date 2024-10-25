@@ -1,7 +1,6 @@
 # NLP Tools
 > [¶ NLTK](#nltk)<br>
-TextBlob<br>
-Gensim**<br>
+[¶ TextBlob](#textblob)<br>
 [¶ POS-Tags](#pos-태그-목록)
 
 
@@ -150,7 +149,6 @@ print("불용어 제거:", filtered_words)
 
 불용어 제거: ['sentence.']
 ```
-
 
 ### CMU
 - 단어별 발음 기호 제공
@@ -488,13 +486,289 @@ plt.show()
 
 [¶ TOP](#nlp-tools)
 
-## TextBlob
+# TextBlob
+- 텍스트 데이터 처리 라이브러리
+
+## 주요 기능 
+
+### 객체 생성
+
+```py
+from textblob import TextBlob
+blob = TextBlob("How fun is it to be a baseball fan right now. Judge and Ohtani playing at the same time is amazing.")
+```
+
+### 품사 태깅
+
+```py
+blob.tags
+
+#
+
+[('How', 'WRB'),
+ ('fun', 'NN'),
+ ('is', 'VBZ'),
+ ('it', 'PRP'),
+ ('to', 'TO'),
+ ('be', 'VB'),
+ ('a', 'DT'),
+ ('baseball', 'NN'),
+ ('fan', 'NN'),
+ ('right', 'RB'),
+ ('now', 'RB'),
+ ('Judge', 'NNP'),
+ ('and', 'CC'),
+ ('Ohtani', 'NNP'),
+ ('playing', 'NN'),
+ ('at', 'IN'),
+ ('the', 'DT'),
+ ('same', 'JJ'),
+ ('time', 'NN'),
+ ('is', 'VBZ'),
+ ('amazing', 'JJ')]
+```
 
 
+### 명사구 추출
+`blob.noun_phrases`
+
+>WordList(['baseball fan', 'ohtani'])
+
+### 감성 분석
+
+```py
+testimonial = TextBlob("How fun is it to be a baseball fan right now, Judge and Ohtani playing at the same time is amazing.")
+testimonial.sentiment
+
+#
+
+Sentiment(polarity=0.29642857142857143, subjectivity=0.4401785714285714)
+
+# 긍정-부정(-1.0 ~ 1.0)
+testimonial.sentiment.polarity 
+#
+0.29642857142857143
+
+# 객관적 (0.0 ~ 1.0)
+testimonial.sentiment.subjectivity
+#
+0.4401785714285714
+```
+
+### NaiveBayesAnalyzer
+
+```py
+from textblob.sentiments import NaiveBayesAnalyzer
+nb_blob = TextBlob(
+  "How fun is it to be a baseball fan right now, Judge and Ohtani playing at the same time is amazing.",
+analyzer=NaiveBayesAnalyzer())
+nb_blob.sentiment
+#
+Sentiment(classification='pos', p_pos=0.7934866888790837, p_neg=0.20651331112091628)
+```
+
+### 토큰화 
+- NLTK 보다 기능이 많지만 성능은 부족한 느낌
+- `blob.words`
+- `blob.sentences`
 
 
+### 단수-복수
 
+```py
+# 단수화
+blob.words.singularize() 
+# 복수화 - 주의점 : 일괄적으로 s가 붙음
+blob.words.pluralize()
+```
 
+### 표제어 추출
+
+```py
+from textblob import Word
+w = Word('octopi')
+w.lemmatize()
+#
+'octopus'
+
+w = Word("went")
+w.lemmatize("v")
+#
+'go'
+```
+
+### Wordnet 활용 
+
+```py
+from textblob import Word
+from textblob.wordnet import VERB
+word = Word("cat")
+word.synsets
+#
+[Synset('cat.n.01'),
+ Synset('guy.n.01'),
+ Synset('cat.n.03'),
+ Synset('kat.n.01'),
+ Synset('cat-o'-nine-tails.n.01'),
+ Synset('caterpillar.n.02'),
+ Synset('big_cat.n.01'),
+ Synset('computerized_tomography.n.01'),
+ Synset('cat.v.01'),
+ Synset('vomit.v.01')]
+```
+
+```py
+Word("grooming").get_synsets(pos=VERB)
+#
+[Synset('prepare.v.05'), Synset('dress.v.15'), Synset('groom.v.03')]
+```
+
+```py
+word.definitions
+#
+['feline mammal usually having thick soft fur and no ability to roar: domestic cats; wildcats',
+ 'an informal term for a youth or man'...'eject the contents of the stomach through the mouth']
+```
+
+### 철자 교정
+
+```py
+b = TextBlob("I havv goood speling!")
+print(b.correct())
+#
+I have good spelling!
+
+from textblob import Word
+w = Word('falibility')
+w.spellcheck()
+#
+[('fallibility', 1.0)]
+```
+
+### Count, Counts
+
+```py
+monty = TextBlob("We are no longer the Knights who say Ni. We are now the Knights who say Ekki ekki ekki PTANG.")
+monty.word_counts['ekki'] # 대소문자 구분하지 않음
+monty.words.count('ekki')
+# 3
+monty.words.count('ekki', case_sensitive=True) # 대소문자 구분
+# 2
+```
+
+### 구문 분석
+
+```py
+b = TextBlob("And now for something completely different.")
+print(b.parse())
+#
+And/CC/O/O now/RB/B-ADVP/O for/IN/B-PP/B-PNP something/NN/B-NP/I-PNP completely/RB/B-ADJP/O different/JJ/I-ADJP/O ././O/O
+```
+
+### 연속되는 리스트 생성
+
+```py
+blob = TextBlob("Now is better than never.")
+blob.ngrams(n=3)
+#
+[WordList(['Now', 'is', 'better']),
+ WordList(['is', 'better', 'than']), 
+ WordList(['better', 'than', 'never'])]
+```
+
+## 분류 모델
+
+### NaiveBayes 모델 
+`from textblob.classifiers import NaiveBayesClassifier`
+
+### 데이터 셋 준비
+- csv 파일
+- (문장, 그룹) 구조
+
+```py
+train = [
+    ('I love this sandwich.', 'pos'),
+    ('This is an amazing place!', 'pos'),
+    ('I feel very good about these beers.', 'pos'),
+    ('This is my best work.', 'pos'),
+    ('What an awesome view', 'pos'),
+    ('I do not like this restaurant', 'neg'),
+    ('I am tired of this stuff.', 'neg'),
+    ('I can’t deal with this', 'neg'),
+    ('He is my sworn enemy!', 'neg'),
+    ('My boss is horrible.', 'neg')
+]
+
+test = [
+    ('The beer was good.', 'pos'),
+    ('I do not enjoy my job', 'neg'),
+    ('I ain’t feeling dandy today.', 'neg'),
+    ('I feel amazing!', 'pos'),
+    ('Gary is a friend of mine.', 'pos'),
+    ('I can’t believe I’m doing this.', 'neg')
+]
+```
+
+### 모델 학습
+`cl = NaiveBayesClassifier(train)`
+
+### 모델 적용
+```py
+cl.classify("an amazing library!")
+#
+'pos'
+
+prob_dist = cl.prob_classify("This one's a doozy.")
+print(prob_dist.max())  # 'pos'
+print(round(prob_dist.prob("pos"), 2))  # 0.63
+print(round(prob_dist.prob("neg"), 2))  # 0.37
+#
+pos
+0.95
+0.05
+```
+
+### textBlob 클래스 활용
+
+```py
+from textblob import TextBlob
+blob = TextBlob("The beer is good. But the hangover is horrible.", classifier=cl)
+
+for s in blob.sentences:
+    print(s, s.classify())
+#
+The beer is good. pos
+But the hangover is horrible. neg
+```
+
+### 평가, 분석
+```
+print(cl.accuracy(test))
+#
+0.8333333333333334
+
+cl.show_informative_features(5)
+#
+Most Informative Features
+          contains(this) = True              neg : pos    =      2.3 : 1.0
+          contains(this) = False             pos : neg    =      1.8 : 1.0
+          contains(This) = False             neg : pos    =      1.6 : 1.0
+            contains(an) = False             neg : pos    =      1.6 : 1.0
+             contains(I) = False             pos : neg    =      1.4 : 1.0
+```
+
+### 데이터 추가
+```
+new_data = [
+    ('She is my best friend.', 'pos'),
+    ("I'm happy to have a new friend.", 'pos'),
+    ("Stay thirsty, my friend.", 'pos'),
+    ("He ain't from around here.", 'neg')
+]
+cl.update(new_data)
+```
+
+[¶ TOP](#nlp-tools)
 
 # POS 태그 목록:
 
