@@ -69,7 +69,7 @@ result = classifier("This product is amazing!")
 print(result) 
 ```
 
-- 결과:''label': 'LABEL_1', 'score': 0.5604719519615173`
+- 결과:`'label': 'LABEL_1', 'score': 0.5604719519615173`
   - 해석할 수 없는 레이블과 수치
   - `BERT`모델의 특징에 기인 : 바로 사용할 수 있는 가중치가 없기 떄문에 파인튜닝 필요
     - 사용자가 제공하는 데이터에 맞춰 추가 학습이 필요
