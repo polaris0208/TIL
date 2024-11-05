@@ -385,6 +385,7 @@ p(a|b) b일때 a일 확률 = p(b|a)* ( p(a) / p(b) )
 * 멀티노미어 - 다항 분포 경우
 <br>
 * 이전까지 KVM과 동일
+
 ```py
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
@@ -421,6 +422,7 @@ leaf - 클래스 레이블
 * gini 계수 - 불순도를 측정
 <br>
 * 이전까지 KVM과 동일
+
 ```py
 model = DecisionTreeClassifier(random_state=42)
 model.fit(X_train, y_train)
