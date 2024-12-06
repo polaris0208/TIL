@@ -214,7 +214,7 @@ CONTAINER ID   IMAGE          COMMAND       CREATED          STATUS             
   - `-d` 백그라운드 모드로
   - `-p` 해당 포트에서
   - `-h` 호스트 이름
-  - `node-test:1.0` 실행할 임지 이름
+  - `node-test:1.0` 실행할 이미지 이름
 
 ```bash
 mkdir nodejsapp
